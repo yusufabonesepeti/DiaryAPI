@@ -1,0 +1,103 @@
+# Visual Studio / .NET
+####################################################
+
+## Build Folders
+**/[Bb]in/
+**/[Oo]bj/
+
+## Rider / IntelliJ
+.idea/
+*.sln.iml
+
+## VS user-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+## Auto-generated MSBuild files
+*.g.cs
+*.g.i.cs
+*.AssemblyInfo.cs
+obj/**/*.cache
+obj/**/*.FileListAbsolute.txt
+
+## NuGet
+*.nupkg
+*.snupkg
+project.nuget.cache
+**/*.nuget.dgspec.json
+**/*.nuget.g.props
+**/*.nuget.g.targets
+rider.project.model.nuget.cache
+rider.project.model.nuget.info
+rider.project.restore.info
+
+## Rider scratch files
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/dictionaries
+.idea/httpRequests
+
+## VS Code
+.vscode/
+
+## Rider & VS Logs
+*.log
+
+## Debugging symbols & pdbs
+*.pdb
+
+## Static Web Assets (blazor/web)
+staticwebassets.build.json
+staticwebassets.build.endpoints.json
+
+## Runtime configuration
+*.runtimeconfig.json
+*.deps.json
+
+## Rider caches
+**/obj/**/ref/
+**/obj/**/refint/
+
+## Test result files
+TestResults/
+*.trx
+
+## DotCover
+*.dotCover
+
+## User secrets
+secrets.json
+
+## OS Files
+####################################################
+# macOS
+.DS_Store
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
+*~
+
+# Misc
+####################################################
+# Resharper
+_ReSharper*/
+*.DotSettings.user
+
+# NCrunch
+_NCrunch_*
+.*crunch*
+
+# Coverlet
+coverage*.json
+coverage*.xml
+coverage*.info
+
+# Other editors
+*.vs/
+*.vscode/
+
