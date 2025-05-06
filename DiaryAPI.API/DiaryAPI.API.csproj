@@ -20,6 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\DiaryAPI.Business\DiaryAPI.Business.csproj" />
       <ProjectReference Include="..\DiaryAPI.DataAccess\DiaryAPI.DataAccess.csproj" />
     </ItemGroup>
 
