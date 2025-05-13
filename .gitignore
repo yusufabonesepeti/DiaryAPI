@@ -15,6 +15,9 @@
 *.userosscache
 *.sln.docstates
 
+##Migrations
+Migrations/
+
 ## Auto-generated MSBuild files
 *.g.cs
 *.g.i.cs

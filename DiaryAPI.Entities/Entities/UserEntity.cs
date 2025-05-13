@@ -8,4 +8,6 @@ public class UserEntity : BaseEntity
     public string Password { get; set; }
     [SwaggerIgnore]
     public string RecoveryKey { get; set; } = Guid.NewGuid().ToString();
+
+    public string Status { get; set; } = "Incomplete";
 }

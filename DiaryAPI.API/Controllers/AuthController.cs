@@ -1,3 +1,4 @@
+using DiaryAPI.API.Extensions;
 using DiaryAPI.API.Models.Auth.Requests;
 using DiaryAPI.API.Models.Auth.Responses;
 using DiaryAPI.Entities.Entities;
@@ -43,19 +44,48 @@ public class AuthController : Controller
         await _userRepository.AddAsync(user);
         await _userRepository.SaveAsync();
 
+        var registerResponse = new RegisterResponse
+        {
+            UserId = user.Id.ToString(),
+            RecoveryKey = user.RecoveryKey
+        };
+
+        return Ok(registerResponse);
+    }
+
+    [HttpPost("verify-recovery-key")]
+    public async Task<IActionResult> VerifyRecoveryKey(VerifyRecoveryKeyRequest request)
+    {
+        var user = await _userRepository.GetByIdAsync(request.UserId);
+        if (user == null)
+        {
+            return NotFound("User not found");
+        }
+
+        if (user.RecoveryKey != request.RecoveryKey)
+        {
+            return BadRequest("Recovery key is invalid");
+        }
+
+        user.Status = "Complete";
+        await _userRepository.SaveAsync();
+
         var token = _tokenService.CreateAccessToken(user);
-        TokenResponse tokenResponse = new TokenResponse
+        
+        var tokenResponse = new TokenResponse
         {
             AccessToken = token
         };
-        
+
         return Ok(tokenResponse);
     }
 
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginRequest request)
     {
-        var user = await _userRepository.GetSingleAsync(user => user.UserName == request.UserName);
+        var user = await _userRepository.GetSingleAsync(user =>
+            user.UserName == request.UserName &&
+            user.Status == "Complete");
         if (user == null)
         {
             return NotFound("User not found");
