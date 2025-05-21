@@ -5,6 +5,7 @@ using DiaryAPI.Business.Models.Exceptions;
 using DiaryAPI.Entities.Entities;
 using DiaryAPI.Entities.Repositories;
 using DiaryAPI.Entities.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DiaryAPI.API.Controllers;
@@ -104,5 +105,35 @@ public class AuthController : Controller
         }
 
         throw new BadRequestException("Invalid password");
+    }
+    
+    [Authorize]
+    [HttpPost("change-password")]
+    public async Task<IActionResult> ChangePassword(ChangePasswordRequest request)
+    {
+        var userId = User.GetUserId();
+        var userGuid = Guid.Parse(userId);
+        
+        var user = await _userRepository.GetByIdAsync(userGuid);
+        if (user == null)
+        {
+            throw new NotFoundException("User not found");
+        }
+
+        if (!_passwordHasher.Verify(user.Password, request.CurrentPassword))
+        {
+            throw new BadRequestException("Current password is invalid");
+        }
+
+        if (request.NewPassword != request.NewPasswordConfirm)
+        {
+            throw new BadRequestException("New password and confirmation do not match");
+        }
+
+        user.Password = _passwordHasher.Hash(request.NewPassword);
+
+        await _userRepository.SaveAsync();
+
+        return Ok();
     }
 }
