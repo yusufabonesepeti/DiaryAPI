@@ -1,6 +1,7 @@
 using DiaryAPI.API.Extensions;
 using DiaryAPI.API.Models.Auth.Requests;
 using DiaryAPI.API.Models.Auth.Responses;
+using DiaryAPI.Business.Models.Exceptions;
 using DiaryAPI.Entities.Entities;
 using DiaryAPI.Entities.Repositories;
 using DiaryAPI.Entities.Services;
@@ -27,12 +28,12 @@ public class AuthController : Controller
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register(RegisterRequest request)
+    public async Task<RegisterResponse> Register(RegisterRequest request)
     {
         var user = await _userRepository.GetSingleAsync(user => user.UserName == request.UserName);
         if (user != null)
         {
-            return BadRequest("User already exists");
+            throw new BadRequestException("User already exists");
         }
 
         user = new UserEntity
@@ -50,21 +51,21 @@ public class AuthController : Controller
             RecoveryKey = user.RecoveryKey
         };
 
-        return Ok(registerResponse);
+        return registerResponse;
     }
 
     [HttpPost("verify-recovery-key")]
-    public async Task<IActionResult> VerifyRecoveryKey(VerifyRecoveryKeyRequest request)
+    public async Task<TokenResponse> VerifyRecoveryKey(VerifyRecoveryKeyRequest request)
     {
         var user = await _userRepository.GetByIdAsync(request.UserId);
         if (user == null)
         {
-            return NotFound("User not found");
+            throw new NotFoundException("User not found");
         }
 
         if (user.RecoveryKey != request.RecoveryKey)
         {
-            return BadRequest("Recovery key is invalid");
+            throw new BadRequestException("Recovery key is invalid");
         }
 
         user.Status = "Complete";
@@ -77,18 +78,18 @@ public class AuthController : Controller
             AccessToken = token
         };
 
-        return Ok(tokenResponse);
+        return tokenResponse;
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login(LoginRequest request)
+    public async Task<TokenResponse> Login(LoginRequest request)
     {
         var user = await _userRepository.GetSingleAsync(user =>
             user.UserName == request.UserName &&
             user.Status == "Complete");
         if (user == null)
         {
-            return NotFound("User not found");
+            throw new NotFoundException("User not found");
         }
 
         if (_passwordHasher.Verify(user.Password, request.Password))
@@ -99,9 +100,9 @@ public class AuthController : Controller
                 AccessToken = token
             };
             
-            return Ok(tokenResponse);
+            return tokenResponse;
         }
-        
-        return BadRequest("Invalid password");
+
+        throw new BadRequestException("Invalid password");
     }
 }
