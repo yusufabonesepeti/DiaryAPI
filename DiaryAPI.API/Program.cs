@@ -1,6 +1,7 @@
 using DiaryAPI.API.Middlewares;
 using DiaryAPI.Business;
 using DiaryAPI.DataAccess;
+using DiaryAPI.DataAccess.Seeds;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -50,6 +51,13 @@ if (app.Environment.IsDevelopment())
 
 app.UseMiddleware<GlobalExceptionHandler>();
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    MoodSeed.Seed(services).Wait();
+}
+
 app.UseHttpsRedirection();
 
 app.Run();

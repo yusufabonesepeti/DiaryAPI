@@ -10,4 +10,5 @@ public class DiaryAPIDbContext : DbContext
     public DiaryAPIDbContext(DbContextOptions options) : base(options) { }
 
     public DbSet<UserEntity> Users { get; set; }
+    public DbSet<MoodEntity> Moods { get; set; }
 }

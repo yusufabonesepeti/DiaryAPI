@@ -14,5 +14,6 @@ public static class ServiceRegistration
             options.UseNpgsql("User ID=postgres;Password=123456;Host=localhost;Port=5432;Database=DiaryDB;"));
 
         services.AddTransient<IUserRepository, UserRepository>();
+        services.AddTransient<IMoodRepository, MoodRepository>();
     }
 }
