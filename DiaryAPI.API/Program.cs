@@ -1,3 +1,4 @@
+using DiaryAPI.API.Middlewares;
 using DiaryAPI.Business;
 using DiaryAPI.DataAccess;
 
@@ -18,6 +19,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseMiddleware<GlobalExceptionHandler>();
 app.MapControllers();
 app.UseHttpsRedirection();
 
