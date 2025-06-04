@@ -53,6 +53,7 @@ public class StatisticController : ControllerBase
             {
                 Title = g.Key.Title,
                 Unicode = g.Key.Unicode,
+                HexColorCode = g.Key.HexColor,
                 Count = g.Count()
             })
             .ToList();
