@@ -10,4 +10,5 @@ public class UserEntity : BaseEntity
     public string RecoveryKey { get; set; } = Guid.NewGuid().ToString();
 
     public string Status { get; set; } = "Incomplete";
+    public ICollection<EntryEntity> Entries { get; set; }
 }

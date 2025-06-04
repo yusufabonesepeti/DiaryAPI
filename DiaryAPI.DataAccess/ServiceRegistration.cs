@@ -15,5 +15,6 @@ public static class ServiceRegistration
 
         services.AddTransient<IUserRepository, UserRepository>();
         services.AddTransient<IMoodRepository, MoodRepository>();
+        services.AddTransient<IEntryRepository, EntryRepository>();
     }
 }

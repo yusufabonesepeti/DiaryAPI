@@ -11,4 +11,5 @@ public class DiaryAPIDbContext : DbContext
 
     public DbSet<UserEntity> Users { get; set; }
     public DbSet<MoodEntity> Moods { get; set; }
+    public DbSet<EntryEntity> Entries { get; set; }
 }
